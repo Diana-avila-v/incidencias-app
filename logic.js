@@ -12,4 +12,9 @@ function crearIncidencia(titulo, descripcion, prioridad, id) {
   };
 }
 
-if (typeof module !== "undefined") module.exports = { ESTADOS, crearIncidencia };
+function filtrarPorEstado(lista, estado) {
+  if (!estado || estado === "Todas") return lista;
+  return lista.filter((i) => i.estado === estado);
+}
+
+if (typeof module !== "undefined") module.exports = { ESTADOS, crearIncidencia, filtrarPorEstado };
