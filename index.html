@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registro de incidencias</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Registro de incidencias <small id="version">v1.0.0</small></h1>
+    <form id="formulario">
+      <input id="titulo" placeholder="Título de la incidencia" required>
+      <textarea id="descripcion" placeholder="Descripción"></textarea>
+      <select id="prioridad">
+        <option>Baja</option><option selected>Media</option><option>Alta</option>
+      </select>
+      <button type="submit">Registrar</button>
+      <p id="error" role="alert"></p>
+    </form>
+    <h2>Incidencias</h2>
+    <ul id="lista"></ul>
+  </main>
+  <script src="logic.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
