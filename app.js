@@ -6,13 +6,14 @@ const guardar = () => localStorage.setItem("incidencias", JSON.stringify(inciden
 function render() {
   const ul = $("#lista");
   ul.innerHTML = "";
-  if (!incidencias.length) {
-    ul.innerHTML = '<li class="vacio">No hay incidencias registradas.</li>';
+  const visibles = filtrarPorEstado(incidencias, $("#filtro").value);
+  if (!visibles.length) {
+    ul.innerHTML = '<li class="vacio">No hay incidencias para mostrar.</li>';
     return;
   }
-  incidencias.forEach((i) => {
+  visibles.forEach((i) => {
     const li = document.createElement("li");
-    li.innerHTML = `<span class="badge">${i.estado}</span><strong>#${i.id} ${esc(i.titulo)}</strong>
+    li.innerHTML = `<select class="estado" data-id="${i.id}">${ESTADOS.map((e) => `<option${e === i.estado ? " selected" : ""}>${e}</option>`).join("")}</select><strong>#${i.id} ${esc(i.titulo)}</strong>
       <p>${esc(i.descripcion)}</p><small>Prioridad: ${i.prioridad} · ${i.fecha}</small>`;
     ul.appendChild(li);
   });
@@ -26,10 +27,26 @@ $("#formulario").addEventListener("submit", (e) => {
     guardar();
     e.target.reset();
     $("#error").textContent = "";
-    render();
+    $("#filtro").addEventListener("change", render);
+$("#lista").addEventListener("change", (e) => {
+  if (!e.target.classList.contains("estado")) return;
+  incidencias.find((i) => i.id == e.target.dataset.id).estado = e.target.value;
+  guardar();
+  render();
+});
+
+render();
   } catch (err) {
     $("#error").textContent = err.message;
   }
+});
+
+$("#filtro").addEventListener("change", render);
+$("#lista").addEventListener("change", (e) => {
+  if (!e.target.classList.contains("estado")) return;
+  incidencias.find((i) => i.id == e.target.dataset.id).estado = e.target.value;
+  guardar();
+  render();
 });
 
 render();
